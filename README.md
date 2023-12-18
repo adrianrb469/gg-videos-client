@@ -1,1 +1,1 @@
-# gg-videos-client
+# React + TypeScript + Vite
