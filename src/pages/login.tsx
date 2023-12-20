@@ -10,10 +10,14 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import useAuth from "@/hooks/useAuth";
 
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+
+import axios from "../api/axios";
 
 const formSchema = z.object({
     email: z.string().email("Please enter a valid email address"),
@@ -21,6 +25,8 @@ const formSchema = z.object({
 });
 
 function Login() {
+    const { setAuth, auth } = useAuth()!;
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -28,9 +34,34 @@ function Login() {
             password: "",
         },
     });
+    const navigate = useNavigate();
+    const [isLoading, setIsLoading] = useState(false);
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        try {
+            console.log(values);
+            setIsLoading(true);
+            const response = await axios.post("/users/login", values, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                withCredentials: true, // Add this line to send credentials
+            });
+
+            const accessToken = response.data.access_token;
+            const user = response.data.user;
+
+            setAuth({ user, access_token: accessToken });
+            console.log(response.data);
+
+            console.log(auth);
+
+            navigate("/home");
+        } catch (err) {
+            console.log(err);
+        }
+
+        setIsLoading(false);
     }
 
     return (
@@ -83,7 +114,9 @@ function Login() {
                             )}
                         />
                         <div className=" flex justify-end">
-                            <Button type="submit">Sign In</Button>
+                            <Button type="submit" disabled={isLoading}>
+                                Sign In
+                            </Button>
                         </div>
                         <div className="w-full text-center">
                             <Link to="/signup" className="text-purple text-sm">
