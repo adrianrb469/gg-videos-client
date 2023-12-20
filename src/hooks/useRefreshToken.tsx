@@ -13,7 +13,8 @@ const useRefreshToken = () => {
 
         const newAuth = {
             ...auth,
-            accessToken: response.data.access_token,
+            user: response.data.user,
+            access_token: response.data.access_token,
         };
 
         console.log("new access token", response.data.access_token);

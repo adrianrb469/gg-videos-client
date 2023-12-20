@@ -6,6 +6,7 @@ import Signup from "./pages/signup";
 import Home from "./pages/home";
 import { AuthProvider } from "./context/authProvider";
 import RequireAuth from "./utils/RequireAuth";
+import PersistLogin from "./components/persistLogin";
 import UserLayout from "./layout/userLayout";
 
 function App() {
@@ -16,17 +17,18 @@ function App() {
                     <Route path="/" element={<Landing />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
+                    <Route element={<PersistLogin />}>
+                        <Route element={<RequireAuth />}>
+                            <Route path="/home" element={<UserLayout />}>
+                                <Route path="" element={<Home />} />
+                            </Route>
 
-                    <Route element={<RequireAuth />}>
-                        <Route path="/home" element={<UserLayout />}>
-                            <Route path="" element={<Home />} />
-                        </Route>
-
-                        <Route element={<RequireAuth adminOnly />}>
-                            <Route
-                                path="/dashboard"
-                                element={<h1>Dashboard</h1>}
-                            />
+                            <Route element={<RequireAuth adminOnly />}>
+                                <Route
+                                    path="/dashboard"
+                                    element={<h1>Dashboard</h1>}
+                                />
+                            </Route>
                         </Route>
                     </Route>
 
