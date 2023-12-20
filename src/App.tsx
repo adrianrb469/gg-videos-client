@@ -3,10 +3,10 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Landing from "./pages/landing";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
-
+import Home from "./pages/home";
 import { AuthProvider } from "./context/authProvider";
-
 import RequireAuth from "./utils/RequireAuth";
+import UserLayout from "./layout/userLayout";
 
 function App() {
     return (
@@ -18,12 +18,22 @@ function App() {
                     <Route path="/signup" element={<Signup />} />
 
                     <Route element={<RequireAuth />}>
-                        <Route path="/home" element={<h1>Upload</h1>} />
-                        <Route
-                            path="/dashboard"
-                            element={<h1>Approve Video</h1>}
-                        />
+                        <Route path="/home" element={<UserLayout />}>
+                            <Route path="" element={<Home />} />
+                        </Route>
+
+                        <Route element={<RequireAuth adminOnly />}>
+                            <Route
+                                path="/dashboard"
+                                element={<h1>Dashboard</h1>}
+                            />
+                        </Route>
                     </Route>
+
+                    <Route
+                        path="/unauthorized"
+                        element={<h1>Unauthorized</h1>}
+                    />
                 </Routes>
             </AuthProvider>
         </BrowserRouter>

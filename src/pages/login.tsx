@@ -2,7 +2,6 @@ import { Button } from "@/components/ui/button";
 import {
     Form,
     FormControl,
-    FormDescription,
     FormField,
     FormItem,
     FormLabel,
@@ -11,7 +10,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import useAuth from "@/hooks/useAuth";
 
 import * as z from "zod";
@@ -45,17 +44,14 @@ function Login() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                withCredentials: true, // Add this line to send credentials
+                withCredentials: true,
             });
 
             const accessToken = response.data.access_token;
             const user = response.data.user;
 
-            setAuth({ user, access_token: accessToken });
             console.log(response.data);
-
-            console.log(auth);
-
+            setAuth({ user, access_token: accessToken });
             navigate("/home");
         } catch (err) {
             console.log(err);
@@ -88,6 +84,8 @@ function Login() {
                                         <Input
                                             placeholder="email@example.com"
                                             {...field}
+                                            required
+                                            autoComplete="email"
                                         />
                                     </FormControl>
 
@@ -106,6 +104,8 @@ function Login() {
                                             placeholder="password"
                                             type="password"
                                             {...field}
+                                            required
+                                            autoComplete="current-password"
                                         />
                                     </FormControl>
 

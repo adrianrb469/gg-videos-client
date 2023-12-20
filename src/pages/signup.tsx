@@ -15,6 +15,8 @@ import { Link } from "react-router-dom";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import axios from "@/api/axios";
+
 const formSchema = z.object({
     email: z.string().email(),
     password: z.string().min(6),
@@ -29,8 +31,19 @@ function Signup() {
         },
     });
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        try {
+            console.log(values);
+            const response = await axios.post("/users/register", values, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            console.log(response);
+        } catch (err) {
+            console.log(err);
+        }
     }
 
     return (
@@ -57,6 +70,8 @@ function Signup() {
                                         <Input
                                             placeholder="email@example.com"
                                             {...field}
+                                            required
+                                            autoComplete="email"
                                         />
                                     </FormControl>
                                     <FormDescription>
@@ -76,6 +91,8 @@ function Signup() {
                                         <Input
                                             placeholder="password"
                                             type="password"
+                                            required
+                                            autoComplete="current-password"
                                             {...field}
                                         />
                                     </FormControl>

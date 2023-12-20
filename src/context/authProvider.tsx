@@ -1,11 +1,12 @@
 import { createContext, useState, ReactNode } from "react";
 
-type User = {
+export type User = {
     user_id: number;
     email: string;
+    is_admin: boolean;
 };
 
-type AuthState = {
+export type AuthState = {
     auth: {
         user?: User;
         access_token?: string;

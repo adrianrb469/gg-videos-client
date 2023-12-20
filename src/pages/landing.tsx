@@ -16,7 +16,7 @@ function Landing() {
                         your <br />
                         commissions.
                     </p>
-                    <div className="flex gap-3">
+                    <div className="flex  space-x-3">
                         <Button asChild>
                             <Link to="/signup">Get Started</Link>
                         </Button>
