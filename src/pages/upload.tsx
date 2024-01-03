@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useToast } from "@/components/ui/use-toast";
+import { axiosFile } from "@/api/axios";
 
 export default function Upload() {
     const [filename, setFilename] = useState("Choose File");
@@ -37,24 +38,25 @@ export default function Upload() {
         formData.append("rating", starRating.toString());
         formData.append("video", file!);
 
-        // fake 1 second delay to simulate upload, console.log something after
-        setTimeout(() => {
-            toast({
-                title: "Submission Successful",
-                description: "Your submission will be reviewed, thank you!",
-                variant: "default",
+        axiosFile
+            .post("/upload/submission", formData)
+            .then((response) => {
+                toast({
+                    title: "Submission Successful",
+                    description: "Your submission will be reviewed, thank you!",
+                    variant: "default",
+                });
+            })
+            .catch((error) => {
+                toast({
+                    title: "Submission Failed",
+                    description: "Please try again later",
+                    variant: "destructive",
+                });
+            })
+            .finally(() => {
+                setIsLoading(false);
             });
-            setIsLoading(false);
-        }, 1000);
-
-        // axiosFile
-        //     .post("/upload/submission", formData)
-        //     .then((response) => {
-        //         console.log(response);
-        //     })
-        //     .catch((error) => {
-        //         console.error(error);
-        //     });
     }
 
     return (
