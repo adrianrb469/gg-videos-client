@@ -1,21 +1,13 @@
 import { Outlet } from "react-router-dom";
+import Navbar from "@/components/navbar";
 
 export default function UserLayout() {
     return (
-        <div>
-            <nav>
-                <ul>
-                    <li>Home</li>
-                    <li>Profile</li>
-                    <li>Settings</li>
-                </ul>
-            </nav>
-
-            <Outlet />
-
-            <footer>
-                <p>Footer</p>
-            </footer>
+        <div className="h-screen w-full flex flex-col">
+            <Navbar />
+            <main className="flex-grow">
+                <Outlet />
+            </main>
         </div>
     );
 }

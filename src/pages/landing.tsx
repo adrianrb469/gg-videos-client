@@ -18,7 +18,7 @@ function Landing() {
                     </p>
                     <div className="flex  space-x-3">
                         <Button asChild>
-                            <Link to="/signup">Get Started</Link>
+                            <Link to="/upload">Get Started</Link>
                         </Button>
                         <Button asChild variant={"outline"}>
                             <Link to="/rewards">What rewards?</Link>

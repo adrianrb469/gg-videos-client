@@ -61,9 +61,9 @@ function Login() {
     }
 
     return (
-        <div className="h-screen   bg-purple flex justify-center items-center ">
+        <div className="h-screen bg-purple flex justify-center items-center ">
             <Link to="/" className="text-white  absolute top-4 left-4">
-                `` Back
+                Back
             </Link>
             <div className="h-auto bg-white p-7 shadow-md rounded-md  w-96  ">
                 <h1 className="text-2xl ">
