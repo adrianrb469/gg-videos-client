@@ -6,14 +6,6 @@ const routes = [
         path: "/home",
         name: "Home",
     },
-    {
-        path: "/faq",
-        name: "About",
-    },
-    {
-        path: "/profile",
-        name: "Profile",
-    },
 ];
 
 export default function Navbar() {
