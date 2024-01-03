@@ -21,6 +21,8 @@ interface Submission {
     review: string;
     rating: number;
     video_url: string;
+    accepted: boolean;
+    status: number;
 }
 
 function Home() {

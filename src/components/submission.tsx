@@ -7,6 +7,8 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import { axiosPrivate } from "@/api/axios";
+import { useEffect, useState } from "react";
 
 interface Submission {
     submission_id: string;
@@ -14,6 +16,8 @@ interface Submission {
     review: string;
     rating: number;
     video_url: string;
+    accepted: boolean;
+    status: number;
 }
 
 export default function Submission({
@@ -22,16 +26,62 @@ export default function Submission({
     review,
     rating,
     video_url,
+    accepted,
+    status,
 }: Submission) {
+    const [currentStatus, setCurrentStatus] = useState(status);
+
+    function approveSubmission() {
+        axiosPrivate
+            .post(`/submissions/approve/${submission_id}`)
+            .then((response) => {
+                console.log(response);
+                setCurrentStatus(1);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
+    function rejectSubmission() {
+        axiosPrivate
+            .post(`/submissions/reject/${submission_id}`)
+            .then((response) => {
+                console.log(response);
+                setCurrentStatus(2);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
+    useEffect(() => {
+        setCurrentStatus(status);
+    }, [status]);
+
     return (
         <div className=" mx-auto bg-white rounded-xl shadow-sm overflow-hidden m-3 p-5 w-full border">
             <div className="flex">
                 <div className="flex-grow flex  justify-between flex-col">
                     <div>
                         <h1 className="text-lg font-bold">
-                            Submission {submission_id}
+                            Submission {submission_id}{" "}
                         </h1>
-
+                        <span
+                            className={`inline-block text-xs px-2 py-1 rounded-sm ${
+                                currentStatus === 1
+                                    ? "bg-green-500 text-white"
+                                    : currentStatus === 2
+                                    ? "bg-red-500 text-white"
+                                    : "border-black-400 border text-black"
+                            }`}
+                        >
+                            {currentStatus === 1
+                                ? "Approved"
+                                : currentStatus === 2
+                                ? "Rejected"
+                                : "Pending"}
+                        </span>
                         <p>{email}</p>
                         <p>{review}</p>
                     </div>
@@ -66,8 +116,12 @@ export default function Submission({
                             </DialogHeader>
                         </DialogContent>
                     </Dialog>
-                    <Button variant="outline">Reject</Button>
-                    <Button variant="outline">Approve</Button>
+                    <Button variant="outline" onClick={rejectSubmission}>
+                        Reject
+                    </Button>
+                    <Button variant="outline" onClick={approveSubmission}>
+                        Approve
+                    </Button>
                 </div>
             </div>
         </div>
